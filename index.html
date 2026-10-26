@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>DriveCrew</title>
+<meta name="description" content="A free drive tracker for you and your friends. No subscription, no ads, your data stays on your phone.">
+<meta name="theme-color" content="#0B0E13">
+<meta name="color-scheme" content="dark light">
+
+<!-- iOS home-screen app -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DriveCrew">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png" sizes="192x192">
+<link rel="stylesheet" href="./vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+
+<a class="skip" href="#view">Skip to content</a>
+
+<div id="app">
+  <main id="view" tabindex="-1"></main>
+
+  <nav class="tabs" id="tabs" aria-label="Main">
+    <a href="#/drive" data-tab="drive">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 12l5-4"/></svg>
+      <span>Drive</span>
+    </a>
+    <a href="#/history" data-tab="history">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18c3-9 6-3 8-7s5 1 8-4"/></svg>
+      <span>History</span>
+    </a>
+    <a href="#/crew" data-tab="crew">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="3.2"/><circle cx="17" cy="11" r="2.4"/><path d="M3.5 19c.6-3.2 2.8-4.6 5.5-4.6s4.9 1.4 5.5 4.6"/></svg>
+      <span>Crew</span>
+    </a>
+    <a href="#/settings" data-tab="settings">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>
+      <span>Settings</span>
+    </a>
+  </nav>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="sheet" class="sheet" hidden></div>
+
+<noscript>
+  <p style="padding:2rem;color:#E8E4DB;background:#0B0E13">DriveCrew needs JavaScript to record a drive.</p>
+</noscript>
+
+<script src="./vendor/leaflet/leaflet.js"></script>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>

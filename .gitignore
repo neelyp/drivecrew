@@ -1,0 +1,9 @@
+node_modules/
+package-lock.json
+.DS_Store
+
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+screenshots/

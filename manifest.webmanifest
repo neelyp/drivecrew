@@ -1,0 +1,23 @@
+{
+  "name": "DriveCrew",
+  "short_name": "DriveCrew",
+  "description": "A free drive tracker for you and your friends. No subscription, no ads, your data stays on your phone.",
+  "start_url": "./",
+  "scope": "./",
+  "id": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0B0E13",
+  "theme_color": "#0B0E13",
+  "categories": ["travel", "utilities", "sports"],
+  "icons": [
+    { "src": "./icons/favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Drive", "url": "./#/drive" },
+    { "name": "History", "url": "./#/history" }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "drivecrew",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Free, no-subscription drive tracker PWA for iPhone and Android.",
+  "scripts": {
+    "start": "node tools/serve.js",
+    "test": "node --test tests/",
+    "icons": "node tools/make-icons.js",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-drivecrew \"node --test rules-tests/\""
+  }
+}

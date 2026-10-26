@@ -1,0 +1,114 @@
+rules_version = '2';
+
+// DriveCrew security rules.
+//
+// Shape of the data:
+//   users/{uid}                    { name, avatar, crews: [crewId] }
+//   crews/{crewId}                 { name, code, ownerUid, createdAt, memberCount }
+//   crews/{crewId}/members/{uid}   { name, avatar, car, joinedAt, shareEnabled }
+//   crews/{crewId}/trips/{tripId}  summary figures only - never a location
+//   codes/{CODE}                   { crewId, ownerUid }
+//
+// Anyone holding a crew's 6-character code can join it. That is deliberate for
+// a group of friends, and it is called out in the README.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isMember(crewId) {
+      return exists(/databases/$(database)/documents/crews/$(crewId)/members/$(request.auth.uid));
+    }
+
+    function isOwner(crewId) {
+      return get(/databases/$(database)/documents/crews/$(crewId)).data.ownerUid == request.auth.uid;
+    }
+
+    // --- profiles ---------------------------------------------------------
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // --- join-by-code lookup ---------------------------------------------
+    match /codes/{code} {
+      // Any signed-in user may resolve a code; that is how joining works.
+      allow get: if signedIn();
+      allow list: if false;
+
+      // Only the owner of the crew being pointed at may mint its code.
+      allow create: if signedIn()
+        && request.resource.data.crewId is string
+        && get(/databases/$(database)/documents/crews/$(request.resource.data.crewId)).data.ownerUid == request.auth.uid;
+
+      allow update: if false;
+      allow delete: if signedIn() && isOwner(resource.data.crewId);
+    }
+
+    // --- crews ------------------------------------------------------------
+    match /crews/{crewId} {
+      allow get: if signedIn() && (isMember(crewId) || resource.data.ownerUid == request.auth.uid);
+      allow list: if false;
+
+      allow create: if signedIn()
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 60
+        && request.resource.data.code is string
+        && request.resource.data.code.size() == 6;
+
+      allow update, delete: if signedIn() && resource.data.ownerUid == request.auth.uid;
+
+      // --- members --------------------------------------------------------
+      match /members/{uid} {
+        allow read: if signedIn() && isMember(crewId);
+
+        // Joining: you may only ever create your own membership, and only for
+        // a crew that actually exists.
+        allow create: if signedIn()
+          && request.auth.uid == uid
+          && exists(/databases/$(database)/documents/crews/$(crewId))
+          && request.resource.data.name is string
+          && request.resource.data.name.size() <= 40;
+
+        allow update: if signedIn() && request.auth.uid == uid;
+        allow delete: if signedIn() && (request.auth.uid == uid || isOwner(crewId));
+      }
+
+      // --- shared trip summaries -----------------------------------------
+      match /trips/{tripId} {
+        allow read: if signedIn() && isMember(crewId);
+
+        allow create: if signedIn()
+          && isMember(crewId)
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.name is string
+          && request.resource.data.name.size() <= 40
+          && request.resource.data.startedAt is number
+          && request.resource.data.topSpeedMs is number
+          && request.resource.data.topSpeedMs >= 0
+          && request.resource.data.topSpeedMs <= 130
+          && (!('distanceM' in request.resource.data)
+              || (request.resource.data.distanceM is number && request.resource.data.distanceM >= 0))
+          && (!('durationS' in request.resource.data)
+              || (request.resource.data.durationS is number && request.resource.data.durationS >= 0))
+          && (!('peakG' in request.resource.data)
+              || (request.resource.data.peakG is number && request.resource.data.peakG >= 0))
+          // Refuse location data outright, whatever a client sends.
+          && !('lat' in request.resource.data)
+          && !('lon' in request.resource.data)
+          && !('segments' in request.resource.data)
+          && !('points' in request.resource.data);
+
+        // Summaries are immutable: correct one by deleting and re-sharing.
+        allow update: if false;
+        allow delete: if signedIn()
+          && (resource.data.uid == request.auth.uid || isOwner(crewId));
+      }
+    }
+  }
+}

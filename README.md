@@ -9,6 +9,9 @@ email in them. Every feature is available to everyone, which is the point.
 Works on iPhone and Android as an installable web app (PWA). Nothing to buy and
 nothing to publish to an app store.
 
+**Live at <https://neelyp.github.io/drivecrew/>** — open it on your phone and add
+it to your home screen.
+
 ---
 
 ## Run it locally
@@ -198,7 +201,13 @@ Or in the browser: push the repository, then Settings → Pages → deploy from
 `main` / root. The site appears at `https://<you>.github.io/drivecrew/`.
 
 Every path in the app is relative and routing is hash-based, so it works from a
-subdirectory with no server rewrites.
+subdirectory with no server rewrites. `.nojekyll` is committed so Pages serves
+the files as-is — without it the Jekyll build fails on this project.
+
+One caveat: Pages serves `sw.js` with `max-age=600` and will not let you change
+it, so a new version can take up to ten minutes to be picked up. Firebase
+Hosting does not have that limit, and `firebase.json` already sets no-cache
+there.
 
 ### Firebase Hosting
 

@@ -1,18 +1,17 @@
-// Firebase configuration for crews. The app runs fully without this: leave the
-// placeholders alone and DriveCrew stays in local-only mode (tracking, history,
-// records, share cards all work; the Crew tab explains it is not set up).
+// Firebase configuration for crews.
 //
-// To switch crews on, follow "Setting up crews" in README.md and paste the
-// config object Firebase gives you over the placeholders below.
+// These values are NOT secrets - a Firebase web config is shipped to every
+// browser that loads the app, by design. What protects the data is
+// firestore.rules, which must be published in the Firebase console.
 //
-// These values are NOT secrets - they ship to every browser that loads the app.
-// What protects your data is firestore.rules, so deploy those too.
+// To reset this file back to placeholders, copy firebase-config.example.js
+// over it; the app then runs in local-only mode and the Crew tab says so.
 
 export const firebaseConfig = {
-  apiKey: 'YOUR_API_KEY',
-  authDomain: 'YOUR_PROJECT.firebaseapp.com',
-  projectId: 'YOUR_PROJECT_ID',
-  storageBucket: 'YOUR_PROJECT.appspot.com',
-  messagingSenderId: 'YOUR_SENDER_ID',
-  appId: 'YOUR_APP_ID',
+  apiKey: 'AIzaSyCqDsOdJ4kGOx4JDpnZWvdOU0C3tes7YWs',
+  authDomain: 'drivecrew-b301d.firebaseapp.com',
+  projectId: 'drivecrew-b301d',
+  storageBucket: 'drivecrew-b301d.firebasestorage.app',
+  messagingSenderId: '315076972066',
+  appId: '1:315076972066:web:290e0560ed2ea1f974047b',
 };

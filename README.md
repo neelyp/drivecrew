@@ -115,6 +115,11 @@ Installing gives it a home-screen icon and a full screen with no browser chrome.
 
 ## Setting up crews
 
+**This deployment already has crews configured**, pointing at a Firebase project
+owned by the repository owner. If you fork this, replace the values in
+`firebase-config.js` with your own project's (steps below) — otherwise your
+crews would live in someone else's database.
+
 **You can skip this entirely.** With no Firebase config, DriveCrew runs in
 local-only mode: tracking, history, records, awards, performance timing and
 share cards all work, and the Crew tab explains it is not set up. Crews only add

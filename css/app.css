@@ -84,6 +84,13 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* The hidden attribute is only `display: none` in the user-agent stylesheet, so
+   ANY author rule that sets display beats it. Without this guard, `.sheet`
+   (display: flex) stayed painted while hidden - a full-screen overlay that
+   swallowed every tap. Enforced globally so the bug cannot come back on
+   another element. */
+[hidden] { display: none !important; }
+
 html, body {
   margin: 0;
   padding: 0;

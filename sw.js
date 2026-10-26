@@ -4,7 +4,7 @@
 // network. Firebase is never cached. Map tiles get a small capped cache, so a
 // route you have already looked at still shows its map offline.
 
-const VERSION = 'v1.0.0';
+const VERSION = 'v1.0.1';
 const SHELL_CACHE = `drivecrew-shell-${VERSION}`;
 const TILE_CACHE = `drivecrew-tiles-${VERSION}`;
 const TILE_LIMIT = 300;

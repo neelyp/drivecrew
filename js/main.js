@@ -1497,6 +1497,9 @@ async function crewDetailScreen(view, crewId) {
 
   const spec = boards[board] || boards.topSpeed;
   const ranked = rows
+    // Show each person's current name and car, not whatever they were called
+    // when they shared their oldest drive.
+    .map((r) => crew.resolveIdentity(r, members))
     .filter((r) => Number.isFinite(spec.get(r)))
     .sort((a, b) => (spec.desc ? spec.get(b) - spec.get(a) : spec.get(a) - spec.get(b)));
 
@@ -1524,9 +1527,9 @@ async function crewDetailScreen(view, crewId) {
         <ul class="list">
           ${ranked.map((r, i) => `<li class="row ${r.uid === me ? 'is-me' : ''}">
             <span class="lb-rank num">${i + 1}</span>
-            <span class="avatar">${esc((members.find((m) => m.uid === r.uid) || {}).avatar || '\u{1F697}')}</span>
+            <span class="avatar">${esc(r.avatar || '\u{1F697}')}</span>
             <span class="row-main">
-              <span class="row-title">${esc(r.name || 'Someone')}</span>
+              <span class="row-title">${esc(r.name)}${r.departed ? ' <span class="faint">left</span>' : ''}</span>
               ${r.car ? `<span class="row-sub">${esc(r.car)}</span>` : ''}
             </span>
             <span class="row-side"><strong>${esc(spec.fmt(spec.get(r)))}</strong></span>

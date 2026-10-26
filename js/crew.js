@@ -288,6 +288,23 @@ export async function leaderboard(crewId, { since = 0 } = {}) {
   return [...byUid.values()];
 }
 
+/**
+ * Trip summaries carry the name the person had when they shared them, so an
+ * old drive keeps an old name. The member document is the current truth, so
+ * prefer it and fall back to the summary only for someone who has left.
+ * Pure, so it is unit tested.
+ */
+export function resolveIdentity(entry, members = []) {
+  const member = members.find((m) => m.uid === entry.uid);
+  return {
+    ...entry,
+    name: (member && member.name) || entry.name || 'Someone',
+    car: (member && member.car) || entry.car || '',
+    avatar: (member && member.avatar) || null,
+    departed: !member,
+  };
+}
+
 export function connectionError() {
   return state.error;
 }

@@ -1,7 +1,7 @@
 // Every tunable number in one place. Settings may override anything in DEFAULTS.
 
 export const APP_NAME = 'DriveCrew';
-export const APP_VERSION = '1.0.2';
+export const APP_VERSION = '1.0.3';
 export const APP_TAGLINE = 'Drive tracking, free forever.';
 
 // --- Trip detection (see README "Trip detection") -------------------------

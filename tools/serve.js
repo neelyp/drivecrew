@@ -43,11 +43,13 @@ const server = createServer(async (req, res) => {
     }
 
     const body = await readFile(filePath);
-    // This is a development server: never let anything be served stale, or an
-    // edit to a module will not show up on reload.
+    // Development server: force revalidation so an edit to a module shows up on
+    // reload. Deliberately "no-cache" and not "no-store" - Chrome refuses to
+    // register a service worker whose script was served no-store, which makes
+    // the PWA look broken locally.
     const headers = {
       'Content-Type': TYPES[extname(filePath)] || 'application/octet-stream',
-      'Cache-Control': 'no-store, no-cache, must-revalidate',
+      'Cache-Control': 'no-cache, max-age=0, must-revalidate',
     };
     res.writeHead(200, headers).end(body);
   } catch (err) {
